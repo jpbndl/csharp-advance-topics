@@ -1,0 +1,14 @@
+﻿using CSharpAdvanceTopics.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSharpAdvanceTopics.Events
+{
+    public class VideoEventArgs : EventArgs
+    {
+        public Video? Video { get; set; }
+    }
+}
