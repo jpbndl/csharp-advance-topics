@@ -26,7 +26,6 @@ namespace CSharpAdvanceTopics.Tests
             Assert.Equal("JP", users[0].Name);
             Assert.Equal("Sandi", users[1].Name);
             Assert.Equal("Jaine", users[2].Name);
-
         }
 
         [Fact]
