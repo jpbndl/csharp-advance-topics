@@ -9,7 +9,7 @@ namespace CSharpAdvanceTopics.Tests
     public class LambdaExpressionsTest
     {
         [Fact]
-        public void ShouldTestLambdaExpressions()
+        public void SquareWithoutLambdaExpression_ShouldRReturnSquareResult()
         {
             var lambdaExpressions = new CSharpAdvanceTopics.LambdaExpressions.LambdaExpressions();
             lambdaExpressions.Express();
@@ -19,7 +19,7 @@ namespace CSharpAdvanceTopics.Tests
         }
 
         [Fact]
-        public void ShouldTestUserRepositoryWithLambdas()
+        public void UserRepository_ShouldReturnUsers()
         {
             var userRepository = new CSharpAdvanceTopics.LambdaExpressions.UserRepository();
             var users = userRepository.GetUsers();

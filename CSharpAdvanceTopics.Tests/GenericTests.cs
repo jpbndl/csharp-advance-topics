@@ -11,7 +11,7 @@ namespace CSharpAdvanceTopics.Tests
     public class GenericTests
     {
         [Fact]
-        public void ShouldCreateAListOfUsers()
+        public void GenericList_ShouldCreateAListOfUsers()
         {
             var jp = new User { Id = 1, Name = "JP"};
             var sandi = new User { Id = 1, Name = "Sandi" };
@@ -29,7 +29,7 @@ namespace CSharpAdvanceTopics.Tests
         }
 
         [Fact]
-        public void ShouldTestNullable()
+        public void GenericsNullable_ShouldTestNullable()
         {
             var number = new Generics.Nullable<int>(4);
             Assert.Equal(4, number.GetValueOrDefault());

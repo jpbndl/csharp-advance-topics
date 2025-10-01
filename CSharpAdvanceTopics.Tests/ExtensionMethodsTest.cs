@@ -10,7 +10,7 @@ namespace CSharpAdvanceTopics.Tests
     public class ExtensionMethodsTest
     {
         [Fact]
-        public void ShouldCapitalizeTheString()
+        public void StringToCapitalize_ShouldCapitalizeTheString()
         {
             try
             {

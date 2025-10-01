@@ -9,7 +9,7 @@ namespace CSharpAdvanceTopics.Tests
     public class DelegatesTest
     {
         [Fact]
-        public void ShouldTestPhotoProcessingWithoutDelegates()
+        public void PhotoProcessor_ShouldShouldReturnWithoutError()
         {
             var photoProcessor = new CSharpAdvanceTopics.Delegates.PhotoProcessor();
             photoProcessor.ProcessWithoutDelegates("photo.jpg");
@@ -18,7 +18,7 @@ namespace CSharpAdvanceTopics.Tests
         }
 
         [Fact]
-        public void ShouldTestPhotoProcessingUsingCustomDelegates()
+        public void ProcessUsingCustomDelegates_ShouldReturnWithoutError()
         {
             var photoProcessor = new CSharpAdvanceTopics.Delegates.PhotoProcessor();
             var filters = new CSharpAdvanceTopics.Delegates.PhotoFilters();

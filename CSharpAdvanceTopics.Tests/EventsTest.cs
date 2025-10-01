@@ -11,7 +11,7 @@ namespace CSharpAdvanceTopics.Tests
     public class EventsTest
     {
         [Fact]
-        public void ShouldTriggerTheEvents()
+        public void VideoEncoder_ShouldTriggerTheEvents()
         {
             try
             {
