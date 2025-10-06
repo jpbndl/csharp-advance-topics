@@ -4,6 +4,7 @@ A comprehensive C#/.NET project demonstrating advanced language features and pro
 
 ## Topics Covered
 
+- **Fundamentals**: C# fundamentals.
 - **Generics**: Type-safe data structures and methods, including custom implementations like `GenericList<T>` and `GenericDictionary<TKey, TValue>`.
 - **Delegates**: Encapsulating method references and enabling flexible callback patterns.
 - **Lambda Expressions**: Concise syntax for defining anonymous functions and expressions.
