@@ -1,6 +1,179 @@
 # Method
-
 A method is a block of code that performs a specific task. Methods allow you to organize code into reusable units.
+
+## Table of Contents
+- [Modifier](#modifier)
+  - [Params Modifier](#params-modifier)
+  - [Ref Modifier](#ref-modifier)
+  - [Out Modifier](#out-modifier)
+- [Method Overloading](#method-overloading)
+- [Method Overriding vs Method Hiding](#method-overriding-vs-method-hiding)
+- [Virtual Method](#virtual-method)
+- [Abstract Method](#abstract-method)
+
+## Modifier
+
+### Params Modifier
+Allows passing any number of arguments of the same type. 
+
+```csharp
+public int Sum(params int[] numbers)
+{
+    return numbers.Sum();
+}
+
+// Usage
+Sum(1, 2, 3);        // 6
+Sum(10, 20, 30, 40); // 100
+```
+
+### Ref Modifier
+Passes variable by reference - method can read AND modify the original variable. Avoid of using ref if possible as it is not a good practice. 
+
+```csharp
+public void Double(ref int number)
+{
+    number = number * 2;
+}
+
+// Usage
+int value = 5;
+Double(ref value);
+Console.WriteLine(value); // 10 (original variable changed)
+```
+
+### Out Modifier
+Method must assign a value - used to return multiple values. Avoid of using out if possible as it is not a good practice. If it happends you need a multiple return, encapsulate it in a class instead.
+
+```csharp
+public bool TryDivide(int a, int b, out int result)
+{
+    if (b == 0)
+    {
+        result = 0;
+        return false;
+    }
+    result = a / b;
+    return true;
+}
+
+// Usage
+if (TryDivide(10, 2, out int answer))
+{
+    Console.WriteLine(answer); // 5
+}
+```
+
+## Method Overloading
+Method overloading is having a class with multiple methods with the same name, that have different parameters.
+
+### Working Example
+
+```csharp
+public class Calculator
+{
+    // Same method name, different parameters
+    public int Add(int a, int b)
+    {
+        return a + b;
+    }
+    
+    public double Add(double a, double b)
+    {
+        return a + b;
+    }
+    
+    public int Add(int a, int b, int c)
+    {
+        return a + b + c;
+    }
+}
+
+// Usage
+var calc = new Calculator();
+
+int result1 = calc.Add(5, 3);           // Calls Add(int, int) → 8
+double result2 = calc.Add(5.5, 3.2);    // Calls Add(double, double) → 8.7
+int result3 = calc.Add(1, 2, 3);        // Calls Add(int, int, int) → 6
+```
+
+### Not Working Example
+
+```csharp
+public string Merge(string str1, string str2) {
+    return str1 + str2;
+}
+
+public string[] Merge(string str1, string str2) {
+    return new string[] { str1, str2 }; // ERROR! We cannot have two method with the same signature which only differ in 
+                                        // the returned type
+}
+```
+**Key Points:**
+- Same method name with different parameter types or counts
+- Compiler determines which method to call based on arguments
+- Return type alone cannot distinguish overloaded methods
+
+## Method Overriding vs Method Hiding
+
+**Method overriding** happens when the derived class provides its own implementation of a virtual or abstract method from a base class.
+
+**Method Hiding** happens when there is a method in the derived class with the same name as the method in the base class that does not override the base class method.
+
+### Method Overriding Example
+```csharp
+public class Vehicle
+{
+    public virtual void Start()
+    {
+        Console.WriteLine("Vehicle starting...");
+    }
+}
+
+public class Car : Vehicle
+{
+    public override void Start()  // Overriding
+    {
+        Console.WriteLine("Car engine starting...");
+    }
+}
+
+// Usage
+Vehicle vehicle = new Car();
+vehicle.Start();  // "Car engine starting..." (polymorphism works)
+```
+
+### Method Hiding Example
+```csharp
+public class Vehicle
+{
+    public virtual void Start()
+    {
+        Console.WriteLine("Vehicle starting...");
+    }
+}
+
+public class Motorcycle : Vehicle
+{
+    public new void Start()  // Hiding (not overriding)
+    {
+        Console.WriteLine("Motorcycle kick-starting...");
+    }
+}
+
+// Usage
+Vehicle vehicle = new Motorcycle();
+vehicle.Start();  // "Vehicle starting..." (base method called!)
+
+Motorcycle bike = new Motorcycle();
+bike.Start();     // "Motorcycle kick-starting..." (derived method called)
+```
+
+**Key Differences:**
+- **Override**: Uses `override` keyword, enables polymorphism
+- **Hiding**: Uses `new` keyword, breaks polymorphism
+- **Override**: Derived method called through base reference
+- **Hiding**: Base method called through base reference
 
 ## Virtual method
 A Virtual method is a method that might be overridden in inheriting class.
@@ -159,6 +332,7 @@ class Program {
     }
 }
 ```
+
 **Key Points:**
 - Abstract methods have no implementation (no body)
 - Must be declared in abstract classes
@@ -166,114 +340,3 @@ class Program {
 - Cannot instantiate abstract classes directly
 - Forces consistent interface across derived classes
 - **Static methods cannot be virtual or abstract** (static belongs to class, not instance)
-
-## Method Overloading
-Method overloading is having a class with multiple methods with the same name, that have different parameters.
-
-### Working Example
-
-```csharp
-public class Calculator
-{
-    // Same method name, different parameters
-    public int Add(int a, int b)
-    {
-        return a + b;
-    }
-    
-    public double Add(double a, double b)
-    {
-        return a + b;
-    }
-    
-    public int Add(int a, int b, int c)
-    {
-        return a + b + c;
-    }
-}
-
-// Usage
-var calc = new Calculator();
-
-int result1 = calc.Add(5, 3);           // Calls Add(int, int) → 8
-double result2 = calc.Add(5.5, 3.2);    // Calls Add(double, double) → 8.7
-int result3 = calc.Add(1, 2, 3);        // Calls Add(int, int, int) → 6
-```
-
-### Not Working Example
-
-```csharp
-public string Merge(string str1, string str2) {
-    return str1 + str2;
-}
-
-public string[] Merge(string str1, string str2) {
-    return new string[] { str1, str2 }; // ERROR! We cannot have two method with the same signature which only differ in 
-                                        // the returned type
-}
-```
-**Key Points:**
-- Same method name with different parameter types or counts
-- Compiler determines which method to call based on arguments
-- Return type alone cannot distinguish overloaded methods
-
-## Method Overriding vs Method Hiding
-
-**Method overriding** happens when the derived class provides its own implementation of a virtual or abstract method from a base class.
-
-**Method Hiding** happens when there is a method in the derived class with the same name as the method in the base class that does not override the base class method.
-
-### Method Overriding Example
-```csharp
-public class Vehicle
-{
-    public virtual void Start()
-    {
-        Console.WriteLine("Vehicle starting...");
-    }
-}
-
-public class Car : Vehicle
-{
-    public override void Start()  // Overriding
-    {
-        Console.WriteLine("Car engine starting...");
-    }
-}
-
-// Usage
-Vehicle vehicle = new Car();
-vehicle.Start();  // "Car engine starting..." (polymorphism works)
-```
-
-### Method Hiding Example
-```csharp
-public class Vehicle
-{
-    public virtual void Start()
-    {
-        Console.WriteLine("Vehicle starting...");
-    }
-}
-
-public class Motorcycle : Vehicle
-{
-    public new void Start()  // Hiding (not overriding)
-    {
-        Console.WriteLine("Motorcycle kick-starting...");
-    }
-}
-
-// Usage
-Vehicle vehicle = new Motorcycle();
-vehicle.Start();  // "Vehicle starting..." (base method called!)
-
-Motorcycle bike = new Motorcycle();
-bike.Start();     // "Motorcycle kick-starting..." (derived method called)
-```
-
-**Key Differences:**
-- **Override**: Uses `override` keyword, enables polymorphism
-- **Hiding**: Uses `new` keyword, breaks polymorphism
-- **Override**: Derived method called through base reference
-- **Hiding**: Base method called through base reference

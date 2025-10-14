@@ -1,6 +1,6 @@
 # Access Modifiers
 
-C# access modifiers:
+A way to control access to a class and/or its members. 
 
 - **public** - accessible by any other type (class,struct,etc) in **any** assembly
 - **internal** - accessible by any other type from the **same** assembly
@@ -11,7 +11,7 @@ C# access modifiers:
 - **private protected** 
     - it works as **protected** in the same assembly
     - cannot be access outside the assembly even when inheriting from the class.
-- **private** - accessible in the **same** class only
+- **private** - accessible in the **same** class only.
 
 *Access modifiers works for classes structs and records with the same effect*
 
