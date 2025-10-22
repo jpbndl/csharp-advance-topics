@@ -19,6 +19,7 @@
 - [Class Couping](#class-coupling)
 - [Partial Class](#partial-class)
 - [Static Class](#static-class)
+- [Abstract Class](#abstract-class)
 - [new Keyword](#new-keyword)
 - [static Keyword](#static-keyword)
 - [Structs](#structs)
@@ -340,11 +341,159 @@ public static class MathHelper
 - Cannot be inherited
 - We can't use `this` keyword because `this` refers to the current instance 
 
-**Rules for constructor in a Static clas**
+**Rules for constructor in a Static class**
 - It must be parameterless
 - It cannot have access modifiers
 - It cannot be inherited or overloaded
 - It cannot be called directly
+
+## Abstract Class
+
+An **abstract class** is a class that cannot be instantiated and is designed to be inherited by other classes. It can contain both abstract methods (without implementation) and concrete methods (with implementation).
+
+### Key Features
+- Cannot be instantiated directly
+- Can have abstract methods (must be implemented by derived classes)
+- Can have concrete methods with implementation
+- Can have constructors, fields, and properties
+- Use `abstract` keyword
+
+### Example: Payment Processing
+
+```csharp
+// Abstract base class
+public abstract class PaymentProcessor
+{
+    public string MerchantId { get; set; }
+    public decimal TransactionFee { get; protected set; }
+    
+    // Concrete method - shared by all payment processors
+    public void LogTransaction(decimal amount)
+    {
+        Console.WriteLine($"Processing ${amount} via {GetType().Name}");
+    }
+    
+    // Abstract methods - must be implemented by each processor
+    public abstract bool ProcessPayment(decimal amount, string cardNumber);
+    public abstract void RefundPayment(string transactionId);
+}
+
+// Concrete implementations
+public class StripeProcessor : PaymentProcessor
+{
+    public StripeProcessor()
+    {
+        TransactionFee = 0.029m; // 2.9%
+    }
+    
+    public override bool ProcessPayment(decimal amount, string cardNumber)
+    {
+        LogTransaction(amount);
+        // Stripe-specific payment logic
+        return true;
+    }
+    
+    public override void RefundPayment(string transactionId)
+    {
+        // Stripe-specific refund logic
+        Console.WriteLine($"Stripe refund for transaction: {transactionId}");
+    }
+}
+
+public class PayPalProcessor : PaymentProcessor
+{
+    public PayPalProcessor()
+    {
+        TransactionFee = 0.034m; // 3.4%
+    }
+    
+    public override bool ProcessPayment(decimal amount, string cardNumber)
+    {
+        LogTransaction(amount);
+        // PayPal-specific payment logic
+        return true;
+    }
+    
+    public override void RefundPayment(string transactionId)
+    {
+        // PayPal-specific refund logic
+        Console.WriteLine($"PayPal refund for transaction: {transactionId}");
+    }
+}
+
+// Usage
+PaymentProcessor processor = new StripeProcessor();
+processor.ProcessPayment(100.00m, "1234-5678-9012-3456");
+
+// PaymentProcessor cannot be instantiated
+// var processor = new PaymentProcessor(); // ERROR!
+```
+
+### When to Use Abstract Classes
+- When you have a group of related classes that share common functionality
+- When you want to provide a common interface but force implementation of specific methods
+- When you need to share code among several closely related classes
+- When you want to declare non-public members (interfaces can't do this)
+
+## Sealed Class 
+
+Sealed class is the opposite of Abstract Class. It prevents derivation of classes or overriding of methods.
+
+### Basic Example
+
+```csharp
+// Sealed class - cannot be inherited
+public sealed class DatabaseConnection
+{
+    public string ConnectionString { get; set; }
+    
+    public void Connect()
+    {
+        Console.WriteLine("Connected to database");
+    }
+}
+
+// This will cause a compilation error
+public class MySqlConnection : DatabaseConnection // ERROR! Cannot inherit from sealed class
+{
+    // ...
+}
+```
+
+### Sealed Methods
+
+```csharp
+public class Vehicle
+{
+    public virtual void Start()
+    {
+        Console.WriteLine("Vehicle starting");
+    }
+}
+
+public class Car : Vehicle
+{
+    // Override and seal the method - no further overriding allowed
+    public sealed override void Start()
+    {
+        Console.WriteLine("Car engine starting");
+    }
+}
+
+public class SportsCar : Car
+{
+    // This will cause a compilation error
+    public override void Start() // ERROR! Cannot override sealed method
+    {
+        Console.WriteLine("Sports car starting");
+    }
+}
+```
+
+### When to Use Sealed
+- Prevent inheritance for security or design reasons
+- Optimize performance (sealed classes can have slight performance benefits)
+- Ensure class behavior cannot be modified by inheritance
 
 ## `new` keyword
 

@@ -38,14 +38,55 @@ Console.WriteLine(list2.Count); // 4 (same object)
 ## Common Types
 
 ### Value Types
-- int, double, bool, char
-- DateTime, decimal
-- struct, enum
+**Integral Types:**
+- byte, sbyte
+- short, ushort
+- int, uint
+- long, ulong
+
+**Floating-Point Types:**
+- float
+- double
+- decimal
+
+**Other Built-in Types:**
+- bool
+- char
+- DateTime, TimeSpan
+- Guid
+
+**User-Defined Types:**
+- struct
+- enum
+- Nullable<T> (e.g., int?, bool?)
 
 ### Reference Types
-- string, object
-- List<T>, Array
-- class, interface, delegate
+**Built-in Types:**
+- string
+- object
+- dynamic
+
+**Arrays:**
+- int[], string[], T[]
+- Multidimensional arrays (int[,])
+- Jagged arrays (int[][])
+
+**Collections:**
+- List<T>, Dictionary<TKey, TValue>
+- Array, ArrayList
+- Queue<T>, Stack<T>
+- HashSet<T>, LinkedList<T>
+
+**User-Defined Types:**
+- class
+- interface
+- delegate
+- record (C# 9+)
+
+**Special Types:**
+- Func<T>, Action<T>
+- Task<T>, Task
+- Exception and derived types
 
 ## Memory Allocation Diagram
 
