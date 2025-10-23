@@ -1,0 +1,75 @@
+# Clean Architecture
+
+A software architecture pattern created by Robert C. Martin that separates concerns and creates systems independent of frameworks, UI, and databases. This promotes maintainable, testable, and adaptable systems through the **Dependency Rule**: dependencies point inward toward the business logic.
+
+## Core Principles
+
+- **Independence of Frameworks** - The system is not tightly coupled to specific frameworks, making it adaptable to changes in tools and technologies.
+- **Testable** - Business rules can be tested without UI, database, web server, or any external elements.
+- **UI Independent** - The UI can change without affecting the business rules or other system components.
+- **Database Independent** - Business rules are not bound to any specific database technology.
+- **External Agency Independent** - Business rules don't depend on external systems or services.
+
+## The Four Layers (Inside-Out)
+
+### 1. Entities (Enterprise Business Rules)
+- **Purpose**: Contains enterprise-wide business rules and core domain logic
+- **Dependencies**: None (innermost layer)
+- **Examples**: `Order`, `Customer`, `Product` domain entities
+- **Characteristics**: Pure business objects with no external dependencies
+
+### 2. Use Cases (Application Business Rules)
+- **Purpose**: Contains application-specific business rules and orchestrates data flow
+- **Dependencies**: Only depends on Entities layer
+- **Examples**: `CreateOrderUseCase`, `ProcessPaymentUseCase`, `GetCustomerOrdersUseCase`
+- **Characteristics**: Defines interfaces for data access and external services
+
+### 3. Interface Adapters (Controllers, Gateways, Presenters)
+- **Purpose**: Converts data between use cases and external systems
+- **Dependencies**: Depends on Use Cases and Entities layers
+- **Examples**: REST controllers, database repositories, external API clients
+- **Characteristics**: Implements interfaces defined in the Use Cases layer
+
+### 4. Frameworks & Drivers (External Interfaces)
+- **Purpose**: Contains frameworks, tools, and external systems
+- **Dependencies**: Depends on all inner layers
+- **Examples**: Web frameworks, databases, external services, UI components
+- **Characteristics**: Most volatile layer, changes frequently
+
+## Dependency Rule
+
+**Critical**: Dependencies must point **inward only**. Inner layers cannot know about outer layers.
+
+```
+Frameworks & Drivers → Interface Adapters → Use Cases → Entities
+```
+
+## Clean Architecture with DDD Implementation
+
+### Core Layers (Business Logic)
+- **Domain Layer**
+  - Contains entities, value objects, domain services, and business rules
+  - No dependencies on external frameworks or infrastructure
+  - Pure C# classes with domain logic
+
+- **Application Layer**
+  - Contains use cases, application services, and interfaces
+  - Defines contracts for infrastructure (repositories, external services)
+  - Orchestrates domain objects to fulfill business requirements
+
+### Infrastructure Layers (Technical Concerns)
+- **Infrastructure Layer**
+  - Implements interfaces defined in Application layer
+  - Contains data access, external API clients, file systems
+  - Uses Entity Framework, HTTP clients, message queues
+
+- **Presentation Layer**
+  - Contains controllers, views, API endpoints
+  - Handles HTTP requests/responses, user input validation
+  - Depends on Application layer through dependency injection
+
+## Benefits
+- **Maintainability**: Clear separation of concerns
+- **Testability**: Business logic isolated from external dependencies
+- **Flexibility**: Easy to swap implementations (database, UI, frameworks)
+- **Scalability**: Each layer can evolve independently
