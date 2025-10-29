@@ -152,6 +152,74 @@ Presentation → Application → Domain
   - Handles HTTP requests/responses, user input validation
   - Depends on Application layer through dependency injection
 
+## .NET Project Structure & References
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        API PROJECT                         │
+│                    (Presentation Layer)                    │
+│  ┌─────────────────┐              ┌─────────────────────┐  │
+│  │   References:   │              │     Contains:       │  │
+│  │ • Application   │              │ • Controllers       │  │
+│  │ • Infrastructure│              │ • Program.cs        │  │
+│  └─────────────────┘              │ • Startup.cs        │  │
+│                                   │ • Middleware        │  │
+│                                   └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+                    │                        │
+                    ▼                        ▼
+┌─────────────────────────────┐    ┌─────────────────────────────┐
+│     INFRASTRUCTURE          │    │       APPLICATION           │
+│                             │    │                             │
+│  ┌─────────────────┐        │    │  ┌─────────────────┐        │
+│  │   References:   │        │    │  │   References:   │        │
+│  │ • Application   │        │    │  │ • Domain        │        │
+│  └─────────────────┘        │    │  └─────────────────┘        │
+│                             │    │                             │
+│  ┌─────────────────┐        │    │  ┌─────────────────┐        │
+│  │    Contains:    │        │    │  │    Contains:    │        │
+│  │ • Repositories  │        │    │  │ • Use Cases     │        │
+│  │ • DbContext     │        │    │  │ • Interfaces    │        │
+│  │ • External APIs │        │    │  │ • Services      │        │
+│  │ • File System   │        │    │  │ • DTOs          │        │
+│  └─────────────────┘        │    │  └─────────────────┘        │
+└─────────────────────────────┘    └─────────────────────────────┘
+                    │                        │
+                    └──────────┬─────────────┘
+                               ▼
+                ┌─────────────────────────────┐
+                │           DOMAIN            │
+                │                             │
+                │  ┌─────────────────┐        │
+                │  │   References:   │        │
+                │  │ • NONE          │        │
+                │  └─────────────────┘        │
+                │                             │
+                │  ┌─────────────────┐        │
+                │  │    Contains:    │        │
+                │  │ • Entities      │        │
+                │  │ • Value Objects │        │
+                │  │ • Domain Events │        │
+                │  │ • Business Rules│        │
+                │  └─────────────────┘        │
+                └─────────────────────────────┘
+```
+
+## Project Reference Flow
+
+```
+API → Application + Infrastructure
+Infrastructure → Application
+Application → Domain
+Domain → (No References)
+```
+
+**Why this structure works:**
+- **API** can access both Application (for use cases) and Infrastructure (for DI registration)
+- **Infrastructure** implements interfaces defined in Application
+- **Application** defines business logic and depends only on Domain
+- **Domain** has zero dependencies (pure business logic)
+
 ## Benefits
 - **Maintainability**: Clear separation of concerns
 - **Testability**: Business logic isolated from external dependencies
